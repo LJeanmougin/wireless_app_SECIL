@@ -4,7 +4,7 @@ from wireless_talker import *
 
 if __name__ == "__main__":
     
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 3 :
         print("Usage" + sys.argv[0] + ": protocol send/receive")
         exit(1)
     protocol = sys.argv[1]
