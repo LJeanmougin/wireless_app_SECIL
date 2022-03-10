@@ -1,3 +1,4 @@
+import yaml
 import socket
 import os
 
@@ -6,28 +7,34 @@ WIFI      = 1
 TYPE_FILE = b'F'
 TYPE_CMD  = b'C'
 
-class WirelessListener:
+class WirelessListener():
 
-    def __init__(self, protocol):
+    protocol = None
+    connection = None
+    config_file = None
+
+    def __init__(self, protocol, config_file):
+        
         self.protocol = protocol
-        self.connection
+        self.config_file = config_file
 
     def connect(self):
+
+        yaml_config = open(self.config_file)
+        config = yaml.load(yaml_config, Loader=yaml.FullLoader)
+        print(config['host_ip'])
         if self.protocol == WIFI:
-            with open("./host_ip", "r") as ip_conf:
-                addr = ip_conf.readline()[:-1]
-            with open("./port", "r") as port_conf:
-                port = int(port_conf.readline())
+            addr = config['host_ip']
+            port = int(config['ip_port'])
             socket_type = socket.AF_INET
         elif self.protocol == BLUETOOTH:
-            port = 5
-            with open("./host_macaddr", "r") as macaddr_conf:
-                addr = macaddr_conf.readline()[:-1]
+            addr = config['host_mac']
+            port = int(config['bluetooth_port'])
             socket_type = socket.AF_BLUETOOTH
-        socket = socket.socket(socket_type, socket.SOCK_STREAM)
-        socket.bind((addr, port))
-        socket.listen(1)
-        self.connection, client_addr = socket.accept()
+        server = socket.socket(socket_type, socket.SOCK_STREAM)
+        server.bind((addr, port))
+        server.listen(1)
+        self.connection, client_addr = server.accept()
         print("Connection address:", client_addr)
     
     def communicate(self):

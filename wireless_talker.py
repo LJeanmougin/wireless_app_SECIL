@@ -1,4 +1,5 @@
 import socket
+import yaml
 
 BLUETOOTH = 0
 WIFI      = 1
@@ -7,22 +8,26 @@ TYPE_CMD  = b'C'
 
 class WirelessTalker:
 
-    def __init__(self, protocol):
+    protocol = None
+    client = None
+    config_file = None
+
+    def __init__(self, protocol, config_file):
+
         self.protocol = protocol
-        self.client
-
-
+        self.config_file = config_file    
+        
     def connect(self):
+
+        yaml_config = open(self.config_file)
+        config = yaml.load(yaml_config, yaml.FullLoader)
         if self.protocol == WIFI:
-            with open("./dest_ip", "r") as ip_conf:
-                addr = ip_conf.readline()[:-1]
-            with open("./port", "r") as port_conf:
-                port = int(port_conf.readline())
+            addr = config['host_ip']
+            port = int(config['ip_port'])
             socket_type = socket.AF_INET
         elif self.protocol == BLUETOOTH:
-            port = 5
-            with open("./paired_macaddr", "r") as macaddr_conf:
-                addr = macaddr_conf.readline()[:-1]
+            addr = config['host_mac']
+            port = int(config['bluetooth_port'])
             socket_type = socket.AF_BLUETOOTH
         self.client = socket.socket(socket_type, socket.SOCK_STREAM)
         self.client.connect((addr, port))
