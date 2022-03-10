@@ -1,7 +1,9 @@
 import socket
 
 BLUETOOTH = 0
-WIFI = 1
+WIFI      = 1
+TYPE_FILE = b'F'
+TYPE_CMD  = b'C'
 
 class WirelessTalker:
 
@@ -12,14 +14,14 @@ class WirelessTalker:
 
     def connect(self):
         if self.protocol == WIFI:
-            with open("./ip", "r") as ip_conf:
+            with open("./dest_ip", "r") as ip_conf:
                 addr = ip_conf.readline()[:-1]
             with open("./port", "r") as port_conf:
                 port = int(port_conf.readline())
             socket_type = socket.AF_INET
         elif self.protocol == BLUETOOTH:
             port = 5
-            with open("./macaddr", "r") as macaddr_conf:
+            with open("./paired_macaddr", "r") as macaddr_conf:
                 addr = macaddr_conf.readline()[:-1]
             socket_type = socket.AF_BLUETOOTH
         self.client = socket.socket(socket_type, socket.SOCK_STREAM)
@@ -73,6 +75,6 @@ class WirelessTalker:
                 except:
                     print("Echec de l'exécution")
     
-    def endcommunication(self):
+    def close_communication(self):
         self.client.close()
                 
