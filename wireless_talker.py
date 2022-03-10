@@ -11,11 +11,18 @@ class WirelessTalker:
 
 
     def connect(self):
-        with open("./ip", "r") as ip_conf:
-            addr = ip_conf.readline()[:-1]
-        with open("./port", "r") as port_conf:
-            port = int(port_conf.readline())
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if self.protocol == WIFI:
+            with open("./ip", "r") as ip_conf:
+                addr = ip_conf.readline()[:-1]
+            with open("./port", "r") as port_conf:
+                port = int(port_conf.readline())
+            socket_type = socket.AF_INET
+        elif self.protocol == BLUETOOTH:
+            port = 5
+            with open("./macaddr", "r") as macaddr_conf:
+                addr = macaddr_conf.readline()[:-1]
+            socket_type = socket.AF_BLUETOOTH
+        self.client = socket.socket(socket_type, socket.SOCK_STREAM)
         self.client.connect((addr, port))
 
     def filesize(file_name):
