@@ -22,11 +22,11 @@ class WirelessTalker:
         yaml_config = open(self.config_file)
         config = yaml.load(yaml_config, Loader=yaml.FullLoader)
         if self.protocol == WIFI:
-            addr = config['host_ip']
+            addr = config['dest_ip']
             port = int(config['ip_port'])
             socket_type = socket.AF_INET
         elif self.protocol == BLUETOOTH:
-            addr = config['host_mac']
+            addr = config['dest_mac']
             port = int(config['bluetooth_port'])
             socket_type = socket.AF_BLUETOOTH
         self.client = socket.socket(socket_type, socket.SOCK_STREAM)
