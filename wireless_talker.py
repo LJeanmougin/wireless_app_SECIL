@@ -20,7 +20,7 @@ class WirelessTalker:
     def connect(self):
 
         yaml_config = open(self.config_file)
-        config = yaml.load(yaml_config, yaml.FullLoader)
+        config = yaml.load(yaml_config, Loader=yaml.FullLoader)
         if self.protocol == WIFI:
             addr = config['host_ip']
             port = int(config['ip_port'])
