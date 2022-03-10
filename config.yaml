@@ -1,6 +1,0 @@
-host_ip : "128.192.3.3"
-dest_ip : "192.214.23.2"
-ip_port : "50200"
-host_mac : "12:12:12:12:12"
-dest_mac : "12:23:é3:34:32"
-bluetooth_port : "5"
