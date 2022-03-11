@@ -32,7 +32,7 @@ class WirelessTalker:
         self.client = socket.socket(socket_type, socket.SOCK_STREAM)
         self.client.connect((addr, port))
 
-    def filesize(file_name):
+    def filesize(self, file_name):
         file = open(file_name, "r")
         file.seek(0,2)
         size = file.tell()
