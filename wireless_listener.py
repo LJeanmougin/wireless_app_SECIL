@@ -41,14 +41,18 @@ class WirelessListener():
         choice = 1
         while choice == 1:
             type = self.connection.recv(1)
-            msg = self.connection.recv(1).decode("UTF-8")
+            b = self.connection.recv(1)
+            msg = b.decode("UTF-8")
             while msg[-1] != '\0':
-                msg += self.connection.recv(1).decode("UTF-8")
+                b = self.connection.recv(1)
+                msg += b.decode("UTF-8")
             if type == TYPE_FILE:
                 try:
-                    size = self.connection.recv(1)
-                    while size[-1] != '\0'.encode("UTF-8"):
-                        size += self.connection.recv(1)
+                    s = self.connection.recv(1)
+                    size = s
+                    while s != '\0'.encode("UTF-8"):
+                        s = self.connection.recv(1)
+                        size += s
                     content = self.connection.recv(int(size[:len(size)-1]))
                     new_file = open(msg[:-1], 'wb')
                     new_file.write(content)
