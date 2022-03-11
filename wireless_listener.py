@@ -71,6 +71,8 @@ class WirelessListener():
             print("1) Oui")
             print("2) Non")
             choice = int(input())
+            os.system('cls' if os.name == 'nt' else 'clear')
+            
     
     def close_communication(self):
         self.connection.close()
